@@ -17,6 +17,7 @@ def recreate_db():
     db.create_all()
     db.session.commit()
 
+
 @manager.command
 def test():
     """Runs the tests without code coverage."""
@@ -25,6 +26,7 @@ def test():
     if result.wasSuccessful():
         return 0
     return 1
+
 
 if __name__ == '__main__':
     manager.run()

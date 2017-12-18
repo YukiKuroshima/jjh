@@ -17,7 +17,9 @@ app.config.from_object(app_settings)
 # instantiate the db
 db = SQLAlchemy(app)
 
+
 # model
+"""
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -30,10 +32,10 @@ class User(db.Model):
         self.username = username
         self.email = email
         self.created_at = datetime.datetime.utcnow()
+"""
 
 
 # routes
-
 @app.route('/ping', methods=['GET'])
 def ping_pong():
     return jsonify({

@@ -1,31 +1,34 @@
-version: '2.1'
+version: '3'
 
 services:
-
-  users-db:
-    container_name: users-db
+  db:
+    container_name: db
     build: ./project/db
-    ports:
-        - 5435:5432  # expose ports - HOST:CONTAINER
+    restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    healthcheck:
-      test: exit 0
+      MYSQL_ROOT_PASSWORD: root
+      # MYSQL_USER: user01
+      # MYSQL_PASSWORD: mysql01
+      # MYSQL_DATABASE: wordpress
+      # ports:
+      #- 3307:3306
+      # expose:
+      # - "3307"
 
   users-service:
     container_name: users-service
     build: ./
     volumes:
-      - '.:/usr/src/app'
+            - '.:/usr/src/app'
     ports:
-      - 5001:5000 # expose ports - HOST:CONTAINER
+            - 5001:5000 # expose ports - HOST:CONTAINER
     environment:
-      - APP_SETTINGS=project.config.DevelopmentConfig
-      - DATABASE_URL=postgres://postgres:postgres@users-db:5432/users_dev
-      - DATABASE_TEST_URL=postgres://postgres:postgres@users-db:5432/users_test
+            - APP_SETTINGS=project.config.DevelopmentConfig
+              # - DATABASE_URL=mysql://user01:mysql01@db:3307/users_dev
+              # - DATABASE_TEST_URL=mysql://user01:mysql01@db:3307/users_test
+              # - DATABASE_URL=mysql://root:root@db:3307/users_dev
+              # - DATABASE_TEST_URL=mysql://root:root@db:3307/users_test
+            - DATABASE_URL=mysql://root:root@db:3306/users_dev
+            - DATABASE_TEST_URL=mysql://root:root@db:3306/users_test
     depends_on:
-      users-db:
-        condition: service_healthy
-    links:
-      - users-db
+            - db
